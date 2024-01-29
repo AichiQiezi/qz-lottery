@@ -1,6 +1,7 @@
 package cn.acqz.lottery.insfratructure.dao;
 
-import cn.itedus.lottery.infrastructure.po.RuleTree;
+
+import cn.acqz.lottery.insfratructure.po.RuleTree;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

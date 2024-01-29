@@ -1,7 +1,7 @@
 package cn.acqz.lottery.insfratructure.dao;
 
-import cn.bugstack.middleware.db.router.annotation.DBRouter;
-import cn.itedus.lottery.infrastructure.po.UserTakeActivityCount;
+import cn.acqz.lottery.insfratructure.po.UserTakeActivityCount;
+import cn.acqz.middleware.db.router.annotation.DBRouter;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

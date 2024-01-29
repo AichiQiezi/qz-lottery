@@ -1,6 +1,6 @@
 package cn.acqz.lottery.insfratructure.dao;
 
-import cn.itedus.lottery.infrastructure.po.RuleTreeNodeLine;
+import cn.acqz.lottery.insfratructure.po.RuleTreeNodeLine;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

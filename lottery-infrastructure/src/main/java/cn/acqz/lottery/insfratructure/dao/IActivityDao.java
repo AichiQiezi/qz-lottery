@@ -32,7 +32,7 @@ public interface IActivityDao {
      * @param alterStateVO [activityId、beforeState、afterState]
      * @return 更新数量
      */
-    int alterState(AlterStateVO alterStateVO);
+//    int alterState(AlterStateVO alterStateVO);
 
     /**
      * 扣减活动库存
@@ -63,7 +63,7 @@ public interface IActivityDao {
      * @param req 入参
      * @return    结果
      */
-    Long queryActivityInfoCount(ActivityInfoLimitPageReq req);
+//    Long queryActivityInfoCount(ActivityInfoLimitPageReq req);
 
     /**
      * 查询活动分页数据列表
@@ -71,6 +71,6 @@ public interface IActivityDao {
      * @param req   入参
      * @return      结果
      */
-    List<Activity> queryActivityInfoList(ActivityInfoLimitPageReq req);
+//    List<Activity> queryActivityInfoList(ActivityInfoLimitPageReq req);
 
 }

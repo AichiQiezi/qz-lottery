@@ -1,6 +1,6 @@
 package cn.acqz.lottery.insfratructure.dao;
 
-import cn.itedus.lottery.infrastructure.po.Strategy;
+import cn.acqz.lottery.insfratructure.po.Strategy;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
