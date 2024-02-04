@@ -97,13 +97,4 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
     public void updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO) {
 
     }
-
-    public static void main(String[] args) {
-        Test test = new Test();
-        Integer times = test.getTimes();
-        System.out.println(times);
-        if (times == 0){
-            System.out.println("hi");
-        }
-    }
 }

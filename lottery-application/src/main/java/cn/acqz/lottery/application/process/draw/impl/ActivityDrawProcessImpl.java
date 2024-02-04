@@ -3,8 +3,10 @@ package cn.acqz.lottery.application.process.draw.impl;
 import cn.acqz.lottery.application.process.draw.IActivityDrawProcess;
 import cn.acqz.lottery.application.process.draw.req.DrawProcessReq;
 import cn.acqz.lottery.application.process.draw.res.DrawProcessResult;
+import cn.acqz.lottery.application.process.draw.res.RuleQuantificationCrowdResult;
 import cn.acqz.lottery.common.Constants;
 import cn.acqz.lottery.domain.activity.service.partake.IActivityPartake;
+import cn.acqz.lottery.domain.rule.model.req.DecisionMatterReq;
 import cn.acqz.lottery.domain.support.ids.IIdGenerator;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.slf4j.Logger;
@@ -34,6 +36,11 @@ public class ActivityDrawProcessImpl implements IActivityDrawProcess {
 
     @Override
     public DrawProcessResult doDrawProcess(DrawProcessReq req) {
+        return null;
+    }
+
+    @Override
+    public RuleQuantificationCrowdResult doRuleQuantificationCrowd(DecisionMatterReq req) {
         return null;
     }
 }
