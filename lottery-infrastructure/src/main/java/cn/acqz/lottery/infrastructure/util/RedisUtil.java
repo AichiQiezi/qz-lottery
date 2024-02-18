@@ -42,7 +42,7 @@ public class RedisUtil {
      * @param stockCount
      * @return 0 表示库存已被消耗完 否则表示当前库存的使用量 + 1
      */
-    public Integer seckill(String stockKey, Integer stockCount){
+    public Integer secKill(String stockKey, Integer stockCount){
         return redisTemplate.execute(SECKILL_SCRIPT,
                 Collections.emptyList(),
                 stockKey,

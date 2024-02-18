@@ -6,13 +6,18 @@ import cn.acqz.lottery.domain.activity.model.vo.DrawOrderVO;
 import cn.acqz.lottery.domain.activity.model.vo.InvoiceVO;
 import cn.acqz.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import cn.acqz.lottery.domain.activity.repository.IUserTakeActivityRepository;
+import cn.acqz.lottery.infrastructure.dao.IActivityDao;
+import cn.acqz.lottery.infrastructure.dao.IUserStrategyExportDao;
 import cn.acqz.lottery.infrastructure.dao.IUserTakeActivityCountDao;
 import cn.acqz.lottery.infrastructure.dao.IUserTakeActivityDao;
+import cn.acqz.lottery.infrastructure.po.Activity;
+import cn.acqz.lottery.infrastructure.po.UserStrategyExport;
 import cn.acqz.lottery.infrastructure.po.UserTakeActivity;
 import cn.acqz.lottery.infrastructure.po.UserTakeActivityCount;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +30,16 @@ import java.util.List;
 public class UserTakeActivityRepository implements IUserTakeActivityRepository {
 
     @Resource
-    private IUserTakeActivityDao userTakeActivityDao;
+    private IActivityDao activityDao;
+
     @Resource
     private IUserTakeActivityCountDao userTakeActivityCountDao;
+
+    @Resource
+    private IUserTakeActivityDao userTakeActivityDao;
+
+    @Resource
+    private IUserStrategyExportDao userStrategyExportDao;
 
     @Override
     public int subtractionLeftCount(Long activityId, String activityName, Integer takeCount, Integer userTakeLeftCount, String uId) {
@@ -70,12 +82,32 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
 
     @Override
     public int lockTackActivity(String uId, Long activityId, Long takeId) {
-        return 0;
+        UserTakeActivity userTakeActivity = new UserTakeActivity();
+        userTakeActivity.setuId(uId);
+        userTakeActivity.setActivityId(activityId);
+        userTakeActivity.setTakeId(takeId);
+        return userTakeActivityDao.lockTackActivity(userTakeActivity);
     }
 
     @Override
     public void saveUserStrategyExport(DrawOrderVO drawOrder) {
+        UserStrategyExport userStrategyExport = new UserStrategyExport();
+        userStrategyExport.setuId(drawOrder.getuId());
+        userStrategyExport.setActivityId(drawOrder.getActivityId());
+        userStrategyExport.setOrderId(drawOrder.getOrderId());
+        userStrategyExport.setStrategyId(drawOrder.getStrategyId());
+        userStrategyExport.setStrategyMode(drawOrder.getStrategyMode());
+        userStrategyExport.setGrantType(drawOrder.getGrantType());
+        userStrategyExport.setGrantDate(drawOrder.getGrantDate());
+        userStrategyExport.setGrantState(drawOrder.getGrantState());
+        userStrategyExport.setAwardId(drawOrder.getAwardId());
+        userStrategyExport.setAwardType(drawOrder.getAwardType());
+        userStrategyExport.setAwardName(drawOrder.getAwardName());
+        userStrategyExport.setAwardContent(drawOrder.getAwardContent());
+        userStrategyExport.setUuid(String.valueOf(drawOrder.getTakeId()));
+        userStrategyExport.setMqState(Constants.MQState.INIT.getCode());
 
+        userStrategyExportDao.insert(userStrategyExport);
     }
 
     @Override
@@ -85,16 +117,36 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
 
     @Override
     public void updateInvoiceMqState(String uId, Long orderId, Integer mqState) {
-
+        UserStrategyExport userStrategyExport = new UserStrategyExport();
+        userStrategyExport.setuId(uId);
+        userStrategyExport.setOrderId(orderId);
+        userStrategyExport.setMqState(mqState);
+        userStrategyExportDao.updateInvoiceMqState(userStrategyExport);
     }
 
     @Override
     public List<InvoiceVO> scanInvoiceMqState() {
-        return null;
-    }
+        // 查询发送 MQ失败和超时 30分钟，未发送 MQ的数据
+        List<UserStrategyExport> userStrategyExportList = userStrategyExportDao.scanInvoiceMqState();
+        // 转换对象
+        List<InvoiceVO> invoiceVOList = new ArrayList<>(userStrategyExportList.size());
+        for (UserStrategyExport userStrategyExport : userStrategyExportList) {
+            InvoiceVO invoiceVO = new InvoiceVO();
+            invoiceVO.setuId(userStrategyExport.getuId());
+            invoiceVO.setOrderId(userStrategyExport.getOrderId());
+            invoiceVO.setAwardId(userStrategyExport.getAwardId());
+            invoiceVO.setAwardType(userStrategyExport.getAwardType());
+            invoiceVO.setAwardName(userStrategyExport.getAwardName());
+            invoiceVO.setAwardContent(userStrategyExport.getAwardContent());
+            invoiceVOList.add(invoiceVO);
+        }
+        return invoiceVOList;    }
 
     @Override
     public void updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO) {
-
+        Activity activity = new Activity();
+        activity.setActivityId(activityPartakeRecordVO.getActivityId());
+        activity.setStockSurplusCount(activityPartakeRecordVO.getStockSurplusCount());
+        activityDao.updateActivityStock(activity);
     }
 }

@@ -8,7 +8,7 @@ import cn.acqz.lottery.domain.rule.model.res.EngineResult;
  * @Author: qz
  * @Date: 2024/2/4
  */
-public interface IEngine {
+public interface EngineFilter {
 
     /**
      * 规则过滤器接口

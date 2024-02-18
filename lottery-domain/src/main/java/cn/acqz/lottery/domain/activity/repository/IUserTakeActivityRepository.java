@@ -42,7 +42,7 @@ public interface IUserTakeActivityRepository {
     void takeActivity(Long activityId, String activityName, Long strategyId, Integer takeCount, Integer userTakeLeftCount, String uId, Date takeDate, Long takeId);
 
     /**
-     * 锁定活动领取记录
+     * 锁定活动领取记录, 更新使用状态
      *
      * @param uId        用户ID
      * @param activityId 活动ID

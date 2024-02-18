@@ -3,9 +3,10 @@
 --- Created by a11.
 --- DateTime: 2024/1/29 23:59
 ---
+-- 库存使用量的 key
 local stockKey = ARGV[1]
 -- 库存总量
-local stockCount = ARGV[2]
+local stockCount = tonumber(ARGV[2])
 
 if tonumber(redis.call('get', stockKey)) >= stockCount then
     -- 库存已经用完

@@ -41,13 +41,13 @@ public class RuleRepository implements IRuleRepository {
         treeRootVO.setTreeRootNodeId(ruleTree.getTreeRootNodeId());
         treeRootVO.setTreeName(ruleTree.getTreeName());
 
-        // 树节点 -> 树连接线
+        // 构建规则树模型
         List<RuleTreeNode> ruleTreeNodeList = ruleTreeNodeDao.queryRuleTreeNodeList(treeId);
         Map<Long, TreeNodeVO> treeNodeMap = new HashMap<>();
         for (RuleTreeNode ruleTreeNode : ruleTreeNodeList) {
             List<TreeNodeLineVO> treeNodeLineInfoList = new ArrayList<>();
             // 只有‘茎’才需要查询节点链路
-            if (Constants.NodeType.STEM.equals(ruleTreeNode.getNodeType())){
+            if (Constants.NodeType.STEM.equals(ruleTreeNode.getNodeType())) {
                 RuleTreeNodeLine ruleTreeNodeLine = new RuleTreeNodeLine();
                 ruleTreeNodeLine.setTreeId(ruleTreeNode.getTreeId());
                 ruleTreeNodeLine.setNodeIdFrom(ruleTreeNode.getId());
@@ -69,7 +69,8 @@ public class RuleRepository implements IRuleRepository {
             treeNodeVO.setNodeValue(ruleTreeNode.getNodeValue());
             treeNodeVO.setRuleKey(ruleTreeNode.getRuleKey());
             treeNodeVO.setRuleDesc(ruleTreeNode.getRuleDesc());
-            treeNodeVO.setTreeNodeLineInfoList(treeNodeLineInfoList);            treeNodeMap.put(ruleTreeNode.getId(), treeNodeVO);
+            treeNodeVO.setTreeNodeLineInfoList(treeNodeLineInfoList);
+            treeNodeMap.put(ruleTreeNode.getId(), treeNodeVO);
         }
 
         TreeRuleRich treeRuleRich = new TreeRuleRich();

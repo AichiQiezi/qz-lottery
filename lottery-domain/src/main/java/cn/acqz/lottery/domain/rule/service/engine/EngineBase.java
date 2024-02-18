@@ -1,6 +1,7 @@
 package cn.acqz.lottery.domain.rule.service.engine;
 
 import cn.acqz.lottery.common.Constants;
+import cn.acqz.lottery.common.PageRequest;
 import cn.acqz.lottery.domain.rule.model.aggregates.TreeRuleRich;
 import cn.acqz.lottery.domain.rule.model.req.DecisionMatterReq;
 import cn.acqz.lottery.domain.rule.model.res.EngineResult;
@@ -13,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- * @Description:
+ * @Description: 规则引擎服务基类
  * @Author: qz
  * @Date: 2024/2/4
  */
-public class EngineBase extends EngineConfig implements IEngine{
+public class EngineBase extends EngineConfig implements EngineFilter {
     private Logger logger = LoggerFactory.getLogger(EngineBase.class);
 
     @Override
@@ -28,7 +29,6 @@ public class EngineBase extends EngineConfig implements IEngine{
     protected TreeNodeVO engineDecisionMaker(TreeRuleRich treeRuleRich, DecisionMatterReq matter) {
         TreeRootVO treeRoot = treeRuleRich.getTreeRoot();
         Map<Long, TreeNodeVO> treeNodeMap = treeRuleRich.getTreeNodeMap();
-
         TreeNodeVO treeNodeVO = treeNodeMap.get(treeRoot.getTreeRootNodeId());
         while (Constants.NodeType.STEM.equals(treeNodeVO.getNodeType())){
             String ruleKey = treeNodeVO.getRuleKey();

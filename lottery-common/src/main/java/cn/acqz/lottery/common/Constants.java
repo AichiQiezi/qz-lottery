@@ -51,7 +51,7 @@ public class Constants {
     public static final class RedisKey {
 
         // 抽奖活动库存 Key
-        private static final String LOTTERY_ACTIVITY_STOCK_COUNT = "lottery_activity_stock_count_";
+        private static final String LOTTERY_ACTIVITY_STOCK_COUNT = "lottery:activity:stockCount:";
 
         public static String KEY_LOTTERY_ACTIVITY_STOCK_COUNT(Long activityId) {
             return LOTTERY_ACTIVITY_STOCK_COUNT + activityId;

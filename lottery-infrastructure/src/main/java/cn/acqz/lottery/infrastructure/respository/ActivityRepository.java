@@ -104,7 +104,7 @@ public class ActivityRepository implements IActivityRepository {
     public ActivityBillVO queryActivityBill(PartakeReq req) {
         Activity activity = activityDao.queryActivityById(req.getActivityId());
         if (null == activity){
-            throw new RuntimeException("查询的活动不存在！");
+            throw new IllegalArgumentException("查询的活动不存在！");
         }
 
         Integer usedStockCountObj = (Integer) redisUtil.get(Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT(req.getActivityId()));
@@ -157,12 +157,12 @@ public class ActivityRepository implements IActivityRepository {
         //获取库存的 key
         String stockKey = Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT(activityId);
         //扣减库存
-        Integer seckillResult = redisUtil.seckill(stockKey, stockCount);
-        if (seckillResult == 0){
+        Integer secKillResult = redisUtil.secKill(stockKey, stockCount);
+        if (secKillResult == 0){
             return new StockResult(Constants.ResponseCode.OUT_OF_STOCK.getCode(), Constants.ResponseCode.OUT_OF_STOCK.getInfo());
         }
         // 以活动库存占用编号，生成对应加锁Key，细化锁的颗粒度
-        String stockTokenKey = Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN(activityId, seckillResult);
+        String stockTokenKey = Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN(activityId, secKillResult);
         // 使用 Redis.setNx 加一个分布式锁；以活动结束时间，设定锁的有效时间。个人占用的锁，不需要被释放。
         long milliseconds = endDateTime.getTime() - System.currentTimeMillis();
         boolean lockToken = redisUtil.setNx(stockTokenKey, milliseconds);
@@ -170,7 +170,7 @@ public class ActivityRepository implements IActivityRepository {
             logger.info("抽奖活动{}用户秒杀{}扣减库存，分布式锁失败：{}", activityId, uId, stockTokenKey);
             return new StockResult(Constants.ResponseCode.ERR_TOKEN.getCode(), Constants.ResponseCode.ERR_TOKEN.getInfo());
         }
-        return new StockResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo(), stockTokenKey, stockCount - seckillResult);
+        return new StockResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo(), stockTokenKey, stockCount - secKillResult);
     }
 
     @Override
