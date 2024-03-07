@@ -24,7 +24,7 @@ public interface IDrawAlgorithm {
      * 1. 把 0.2 转换为 20 <br/>
      * 2. 20 对应的斐波那契值哈希值：（20 * HASH_INCREMENT + HASH_INCREMENT）= -1549107828 HASH_INCREMENT = 0x61c88647 <br/>
      * 3. 再通过哈希值计算索引位置：hashCode & (rateTuple.length - 1) = 12 <br/>
-     * 4. 那么tup[14] = 0.2 中奖概率对应的奖品 <br/>
+     * 4. 那么tup[12] = 0.2 中奖概率对应的奖品 <br/>
      * 5. 当后续通过随机数获取到1-100的值后，可以直接定位到对应的奖品信息，通过这样的方式把轮训算奖的时间复杂度从O(n) 降低到 0(1) <br/>
      *
      * @param strategyId        策略ID

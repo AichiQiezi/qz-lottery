@@ -49,7 +49,7 @@ spring:
   # redis.conf protected-mode yes 改为 protected-mode no
   redis:
     database: 0
-    host: 8.130.76.32     # Redis服务器地址，修改为你的地址
+    host:  47.99.106.162     # Redis服务器地址，修改为你的地址
     port: 6379          # Redis服务器连接端口
     password: aishuishui          # Redis服务器连接密码（默认为空）
     timeout: 3000       # Redis服务器链接超时配置
@@ -60,23 +60,23 @@ spring:
 # http://39.96.73.167:7397/xxl-job-admin
 # 账号：admin
 # 密码：123456
-xxl:
-  job:
-    admin:
-      ### 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
-      addresses: http://47.99.106.162:7397/xxl-job-admin
-    executor:
-      ### 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
-      appname: lottery-job
-      ### 执行器注册 [选填]：优先使用该配置作为注册地址，为空时使用内嵌服务 ”IP:PORT“ 作为注册地址。从而更灵活的支持容器类型执行器动态IP和动态映射端口问题。
-      address:
-      ### 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，该IP不会绑定Host仅作为通讯实用；地址信息用于 "执行器注册" 和 "调度中心请求并触发任务"；
-      ip:
-      ### 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，单机部署多个执行器时，注意要配置不同执行器端口；
-      port: 9998
-      logpath: /data/applogs/xxl-job/jobhandler
-      logretentiondays: 50
-    accessToken: xdsl3ewi3al1oehxmo68pqxer
+#xxl:
+#  job:
+#    admin:
+#      ### 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
+#      addresses: http://47.99.106.162:7397/xxl-job-admin
+#    executor:
+#      ### 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
+#      appname: lottery-job
+#      ### 执行器注册 [选填]：优先使用该配置作为注册地址，为空时使用内嵌服务 ”IP:PORT“ 作为注册地址。从而更灵活的支持容器类型执行器动态IP和动态映射端口问题。
+#      address:
+#      ### 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，该IP不会绑定Host仅作为通讯实用；地址信息用于 "执行器注册" 和 "调度中心请求并触发任务"；
+#      ip:
+#      ### 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，单机部署多个执行器时，注意要配置不同执行器端口；
+#      port: 9998
+#      logpath: /data/applogs/xxl-job/jobhandler
+#      logretentiondays: 50
+#    accessToken: xdsl3ewi3al1oehxmo68pqxer
 
 # 多数据源路由配置
 # mysql 5.x driver-class-name: com.mysql.jdbc.Driver    mysql-connector-java 5.1.34
@@ -91,17 +91,17 @@ mini-db-router:
       list: db01,db02
       db00:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://8.130.76.32:3307/lottery?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql:// 47.99.106.162:3307/lottery?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
       db01:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://8.130.76.32:3307/lottery_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql:// 47.99.106.162:3307/lottery_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
       db02:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://8.130.76.32:3307/lottery_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql:// 47.99.106.162:3307/lottery_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
 
@@ -113,7 +113,7 @@ mybatis:
 # nacos 配置中心
 nacos:
   discovery:
-    server-addr: 8.130.76.32:8848
+    server-addr:  47.99.106.162:8848
 
 # Dubbo 广播方式配置，如果调用不稳定可以修改为直连模式：https://codechina.csdn.net/KnowledgePlanet/Lottery/-/issues/1
 dubbo:
@@ -126,7 +126,7 @@ dubbo:
 #    address: N/A
 #    address: #multicast://224.5.6.7:1234
 #    address: zookeeper://127.0.0.1:2181
-    address: nacos://8.130.76.32:8848
+    address: nacos:// 47.99.106.162:8848
   protocol:
     name: dubbo
     port: -1

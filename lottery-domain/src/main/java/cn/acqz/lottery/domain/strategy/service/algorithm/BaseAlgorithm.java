@@ -25,6 +25,7 @@ public abstract class BaseAlgorithm implements IDrawAlgorithm {
 
     /**
      * 存放概率与奖品对应的散列结果，strategyId -> rateTuple
+     * 只保存单体概率的策略
      */
     protected Map<Long, String[]> rateTupleMap = new ConcurrentHashMap<>();
 

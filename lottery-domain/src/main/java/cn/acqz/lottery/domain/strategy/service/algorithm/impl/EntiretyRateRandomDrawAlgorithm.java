@@ -56,7 +56,7 @@ public class EntiretyRateRandomDrawAlgorithm extends BaseAlgorithm {
         int cursorVal = 0;
         for (AwardRateVO awardRateVO : differenceAwardRateList) {
             int rateVal = awardRateVO.getAwardRate().divide(differenceDenominator, 2, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).intValue();
-            if (randomVal <= (cursorVal + randomVal)){
+            if (randomVal < (cursorVal + randomVal)){
                 awardId = awardRateVO.getAwardId();
                 break;
             }

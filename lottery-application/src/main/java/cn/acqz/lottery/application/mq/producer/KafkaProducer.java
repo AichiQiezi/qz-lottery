@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * @Description: MQ 消息发送服务
@@ -63,4 +67,3 @@ public class KafkaProducer {
     }
 
 }
-
