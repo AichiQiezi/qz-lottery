@@ -23,7 +23,7 @@ public abstract class BaseActivityPartake extends ActivityPartakeSupport impleme
 
     @Override
     public PartakeResult doPartake(PartakeReq req) {
-        // 查询是否存在未执行的抽奖单
+        // 查询是否存在未执行的抽奖单，抽奖单在数据库是分库不分表
         UserTakeActivityVO userTakeActivityVO = this.queryNoConsumedTakeActivityOrder(req.getActivityId(), req.getuId());
         if (null != userTakeActivityVO){
             return buildPartakeResult(userTakeActivityVO.getStrategyId(), userTakeActivityVO.getTakeId(), Constants.ResponseCode.NOT_CONSUMED_TAKE);

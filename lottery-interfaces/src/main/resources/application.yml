@@ -2,10 +2,6 @@ server:
   port: 8081
 
 spring:
-  # 如果你是本地安装 kafka 按照下面的方式启动即可
-  # Spring kafka 配置 cd itstack/soft/kafka_2.13-2.8.0
-  # 启动zk：bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
-  # 启动kafka：bin/kafka-server-start.sh -daemon config/server.properties
   kafka:
     bootstrap-servers: 47.99.106.162:9092
     producer:
@@ -91,17 +87,17 @@ mini-db-router:
       list: db01,db02
       db00:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql:// 47.99.106.162:3307/lottery?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql://47.99.106.162:3306/lottery?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
       db01:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql:// 47.99.106.162:3307/lottery_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql://47.99.106.162:3306/lottery_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
       db02:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql:// 47.99.106.162:3307/lottery_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql://47.99.106.162:3306/lottery_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
 
@@ -113,7 +109,7 @@ mybatis:
 # nacos 配置中心
 nacos:
   discovery:
-    server-addr:  47.99.106.162:8848
+    server-addr: 127.0.0.1:8848
 
 # Dubbo 广播方式配置，如果调用不稳定可以修改为直连模式：https://codechina.csdn.net/KnowledgePlanet/Lottery/-/issues/1
 dubbo:
@@ -126,7 +122,7 @@ dubbo:
 #    address: N/A
 #    address: #multicast://224.5.6.7:1234
 #    address: zookeeper://127.0.0.1:2181
-    address: nacos:// 47.99.106.162:8848
+    address: nacos://127.0.0.1:8848
   protocol:
     name: dubbo
     port: -1

@@ -12,6 +12,7 @@ import cn.acqz.lottery.domain.activity.model.res.PartakeResult;
 import cn.acqz.lottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import cn.acqz.lottery.domain.activity.model.vo.DrawOrderVO;
 import cn.acqz.lottery.domain.activity.model.vo.InvoiceVO;
+import cn.acqz.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import cn.acqz.lottery.domain.activity.service.partake.IActivityPartake;
 import cn.acqz.lottery.domain.rule.model.req.DecisionMatterReq;
 import cn.acqz.lottery.domain.rule.model.res.EngineResult;
@@ -91,7 +92,7 @@ public class ActivityDrawProcessImpl implements IActivityDrawProcess {
             return new DrawProcessResult(Constants.ResponseCode.LOSING_DRAW.getCode(), Constants.ResponseCode.LOSING_DRAW.getInfo());
         }
 
-        // 4. 结果落库
+        // 4. 结果落库，修改抽奖单的状态为已使用，并保存用户的抽奖结果
         DrawAwardVO drawAwardVO = drawResult.getDrawAwardInfo();
         DrawOrderVO drawOrderVO = buildDrawOrderVO(req, strategyId, takeId, drawAwardVO);
 

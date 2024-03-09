@@ -47,7 +47,7 @@ public class StrategyRepository implements IStrategyRepository {
         StrategyRich strategyRich = new StrategyRich();
 
         List<StrategyDetail> strategyDetailList = strategyDetailDao.queryStrategyDetailList(strategyId);
-        List<StrategyDetailBriefVO> strategyDetailBriefVOList = getStrategyDetailBriefVOS(strategyDetailList);
+        List<StrategyDetailBriefVO> strategyDetailBriefVOList = this.getStrategyDetailBriefVOS(strategyDetailList);
         strategyRich.setStrategy(strategyBriefVO);
         strategyRich.setStrategyDetailList(strategyDetailBriefVOList);
         return strategyRich;

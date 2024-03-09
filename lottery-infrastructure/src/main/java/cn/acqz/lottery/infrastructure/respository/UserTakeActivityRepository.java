@@ -14,6 +14,7 @@ import cn.acqz.lottery.infrastructure.po.Activity;
 import cn.acqz.lottery.infrastructure.po.UserStrategyExport;
 import cn.acqz.lottery.infrastructure.po.UserTakeActivity;
 import cn.acqz.lottery.infrastructure.po.UserTakeActivityCount;
+import cn.acqz.lottery.infrastructure.util.RedisUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -41,9 +42,12 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
     @Resource
     private IUserStrategyExportDao userStrategyExportDao;
 
+    @Resource
+    private RedisUtil redisUtil;
+
     @Override
     public int subtractionLeftCount(Long activityId, String activityName, Integer takeCount, Integer userTakeLeftCount, String uId) {
-        if (null == userTakeLeftCount){
+        if (null == userTakeLeftCount) {
             UserTakeActivityCount userTakeActivityCount = new UserTakeActivityCount();
             userTakeActivityCount.setuId(uId);
             userTakeActivityCount.setActivityId(activityId);
@@ -51,7 +55,7 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
             userTakeActivityCount.setLeftCount(takeCount - 1);
             userTakeActivityCountDao.insert(userTakeActivityCount);
             return 1;
-        }else {
+        } else {
             UserTakeActivityCount userTakeActivityCount = new UserTakeActivityCount();
             userTakeActivityCount.setuId(uId);
             userTakeActivityCount.setActivityId(activityId);
@@ -110,9 +114,32 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         userStrategyExportDao.insert(userStrategyExport);
     }
 
+    /**
+     * 优化：
+     *
+     * @param activityId 活动ID
+     * @param uId        用户ID
+     * @return UserTakeActivityVO
+     */
     @Override
     public UserTakeActivityVO queryNoConsumedTakeActivityOrder(Long activityId, String uId) {
-        return null;
+        UserTakeActivity userTakeActivity = new UserTakeActivity();
+        userTakeActivity.setuId(uId);
+        userTakeActivity.setActivityId(activityId);
+        UserTakeActivity noConsumedTakeActivityOrder = userTakeActivityDao.queryNoConsumedTakeActivityOrder(userTakeActivity);
+
+        // 未查询到符合的领取单，直接返回 NULL
+        if (null == noConsumedTakeActivityOrder) {
+            return null;
+        }
+
+        UserTakeActivityVO userTakeActivityVO = new UserTakeActivityVO();
+        userTakeActivityVO.setActivityId(noConsumedTakeActivityOrder.getActivityId());
+        userTakeActivityVO.setTakeId(noConsumedTakeActivityOrder.getTakeId());
+        userTakeActivityVO.setStrategyId(noConsumedTakeActivityOrder.getStrategyId());
+        userTakeActivityVO.setState(noConsumedTakeActivityOrder.getState());
+
+        return userTakeActivityVO;
     }
 
     @Override
@@ -140,7 +167,8 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
             invoiceVO.setAwardContent(userStrategyExport.getAwardContent());
             invoiceVOList.add(invoiceVO);
         }
-        return invoiceVOList;    }
+        return invoiceVOList;
+    }
 
     @Override
     public void updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO) {
