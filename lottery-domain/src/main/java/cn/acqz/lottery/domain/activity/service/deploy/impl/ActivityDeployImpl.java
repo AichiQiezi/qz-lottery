@@ -49,9 +49,9 @@ public class ActivityDeployImpl implements IActivityDeploy {
             List<StrategyDetailVO> strategyDetailList = strategy.getStrategyDetailList();
             activityRepository.addStrategyDetailList(strategyDetailList);
 
-        } catch (DuplicateKeyException duplicateKeyException) {
-            logger.error("创建活动失败，唯一索引冲突 activityId {} reqJson {}", req.getActivityId(), JSON.toJSONString(req), duplicateKeyException);
-            throw duplicateKeyException;
+        } catch (DuplicateKeyException e) {
+            logger.error("创建活动失败，唯一索引冲突 activityId {} reqJson {}", req.getActivityId(), JSON.toJSONString(req), e);
+            throw e;
         }
     }
 

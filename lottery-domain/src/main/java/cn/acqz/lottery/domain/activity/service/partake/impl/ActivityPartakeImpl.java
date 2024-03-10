@@ -107,7 +107,8 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
                     userTakeActivityRepository.takeActivity(bill.getActivityId(), bill.getActivityName(), bill.getStrategyId(), bill.getTakeCount(), bill.getUserTakeLeftCount(), partake.getuId(), partake.getPartakeDate(), takeId);
                 } catch (DuplicateKeyException e) {
                     status.setRollbackOnly();
-                    logger.error("领取活动，唯一索引冲突 activityId：{} uId：{}", partake.getActivityId(), partake.getuId(), e);
+//                    logger.error("领取活动，唯一索引冲突 activityId：{} uId：{}", partake.getActivityId(), partake.getuId(),e);
+                    logger.error("领取活动，唯一索引冲突 activityId：{} uId：{}", partake.getActivityId(), partake.getuId());
                     return Result.buildResult(Constants.ResponseCode.INDEX_DUP);
                 }
                 return Result.buildSuccessResult();
@@ -135,7 +136,8 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
                     userTakeActivityRepository.saveUserStrategyExport(drawOrder);
                 } catch (DuplicateKeyException e) {
                     status.setRollbackOnly();
-                    logger.error("记录中奖单，唯一索引冲突 activityId：{} uId：{}", drawOrder.getActivityId(), drawOrder.getuId(), e);
+//                    logger.error("记录中奖单，唯一索引冲突 activityId：{} uId：{}", drawOrder.getActivityId(), drawOrder.getuId(), e);
+                    logger.error("记录中奖单，唯一索引冲突 activityId：{} uId：{}", drawOrder.getActivityId(), drawOrder.getuId());
                     return Result.buildResult(Constants.ResponseCode.INDEX_DUP);
                 }
                 return Result.buildSuccessResult();

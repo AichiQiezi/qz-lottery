@@ -31,7 +31,7 @@ public interface IUserTakeActivityRepository {
      * 领取活动
      *
      * @param activityId        活动ID
-     * @param activityName      活动名称
+     * @param activityName      活动名称s
      * @param strategyId        抽奖策略ID
      * @param takeCount         活动个人可领取次数
      * @param userTakeLeftCount 活动个人剩余领取次数

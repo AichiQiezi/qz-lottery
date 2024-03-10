@@ -11,6 +11,11 @@ import cn.acqz.lottery.infrastructure.dao.IStrategyDetailDao;
 import cn.acqz.lottery.infrastructure.po.Award;
 import cn.acqz.lottery.infrastructure.po.Strategy;
 import cn.acqz.lottery.infrastructure.po.StrategyDetail;
+import cn.acqz.lottery.infrastructure.util.RedisUtil;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -34,23 +39,44 @@ public class StrategyRepository implements IStrategyRepository {
     @Resource
     private IAwardDao awardDao;
 
+    @Resource
+    private RedisUtil redisUtil;
+
+    /**
+     * 策略配置可以提前初始化到，内存里。
+     * 可以构建多级缓存，redis -> nginx -> jvm
+     *
+     * @param strategyId 策略ID
+     * @return StrategyRich
+     */
     @Override
     public StrategyRich queryStrategyRich(Long strategyId) {
-        Strategy strategy = strategyDao.queryStrategy(strategyId);
-        StrategyBriefVO strategyBriefVO = new StrategyBriefVO();
-        strategyBriefVO.setStrategyId(strategy.getStrategyId());
-        strategyBriefVO.setStrategyDesc(strategy.getStrategyDesc());
-        strategyBriefVO.setStrategyMode(strategy.getStrategyMode());
-        strategyBriefVO.setGrantType(strategy.getGrantType());
-        strategyBriefVO.setGrantDate(strategy.getGrantDate());
-        strategyBriefVO.setExtInfo(strategy.getExtInfo());
-        StrategyRich strategyRich = new StrategyRich();
+        String value = (String) redisUtil.get(String.valueOf(strategyId));
+        if (StrUtil.isNotEmpty(value)) {
+            return JSONUtil.toBean(value, StrategyRich.class);
+        }
+        synchronized (this) {
+            value = (String) redisUtil.get(String.valueOf(strategyId));
+            if (StrUtil.isNotEmpty(value)) {
+                return JSONUtil.toBean(value, StrategyRich.class);
+            }
+            Strategy strategy = strategyDao.queryStrategy(strategyId);
+            StrategyBriefVO strategyBriefVO = new StrategyBriefVO();
+            strategyBriefVO.setStrategyId(strategy.getStrategyId());
+            strategyBriefVO.setStrategyDesc(strategy.getStrategyDesc());
+            strategyBriefVO.setStrategyMode(strategy.getStrategyMode());
+            strategyBriefVO.setGrantType(strategy.getGrantType());
+            strategyBriefVO.setGrantDate(strategy.getGrantDate());
+            strategyBriefVO.setExtInfo(strategy.getExtInfo());
+            StrategyRich strategyRich = new StrategyRich();
 
-        List<StrategyDetail> strategyDetailList = strategyDetailDao.queryStrategyDetailList(strategyId);
-        List<StrategyDetailBriefVO> strategyDetailBriefVOList = this.getStrategyDetailBriefVOS(strategyDetailList);
-        strategyRich.setStrategy(strategyBriefVO);
-        strategyRich.setStrategyDetailList(strategyDetailBriefVOList);
-        return strategyRich;
+            List<StrategyDetail> strategyDetailList = strategyDetailDao.queryStrategyDetailList(strategyId);
+            List<StrategyDetailBriefVO> strategyDetailBriefVOList = this.getStrategyDetailBriefVOS(strategyDetailList);
+            strategyRich.setStrategy(strategyBriefVO);
+            strategyRich.setStrategyDetailList(strategyDetailBriefVOList);
+            redisUtil.set(String.valueOf(strategyId), JSONUtil.toJsonPrettyStr(strategyRich));
+            return strategyRich;
+        }
     }
 
     private static List<StrategyDetailBriefVO> getStrategyDetailBriefVOS(List<StrategyDetail> strategyDetailList) {
