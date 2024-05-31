@@ -3,7 +3,7 @@ server:
 
 spring:
   kafka:
-    bootstrap-servers: 47.99.106.162:9092
+    bootstrap-servers: 
     producer:
       # 发生错误后，消息重发的次数。
       retries: 1
@@ -45,9 +45,9 @@ spring:
   # redis.conf protected-mode yes 改为 protected-mode no
   redis:
     database: 0
-    host:  47.99.106.162     # Redis服务器地址，修改为你的地址
+    host:      # Redis服务器地址，修改为你的地址
     port: 6379          # Redis服务器连接端口
-    password: aishuishui          # Redis服务器连接密码（默认为空）
+    password:     # Redis服务器连接密码（默认为空）
     timeout: 3000       # Redis服务器链接超时配置
 
 # xxl-job
@@ -87,17 +87,17 @@ mini-db-router:
       list: db01,db02
       db00:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://47.99.106.162:3306/lottery?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql://:3306/lottery?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
       db01:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://47.99.106.162:3306/lottery_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql://:3306/lottery_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
       db02:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://47.99.106.162:3306/lottery_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        url: jdbc:mysql://:3306/lottery_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
         password: root
 
